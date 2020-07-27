@@ -15,6 +15,14 @@ parser.add_argument(
     dest="profile",
     help="Your AWS CLI profile name",
 )
+parser.add_argument(
+    "-r",
+    "--region",
+    action="store",
+    required=True,
+    dest="region",
+    help="Your AWS CLI region",
+)
 
 # Template is only for Greengrass 1.10.0 and newer
 config_json_template = {
@@ -84,7 +92,7 @@ if __name__ == "__main__":
     stackname = read_manifest()
 
     # Get outputs to create files and config.json
-    session = boto3.Session(profile_name=args.profile)
+    session = boto3.Session(profile_name=args.profile,region_name=args.region)
     cloudformation = session.resource("cloudformation")
     stack = cloudformation.Stack(stackname)
     stack.load()
